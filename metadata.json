@@ -1,0 +1,8 @@
+{
+  "name": "IELTS Reading Skill Focus - P1_3",
+  "description": "Interactive IELTS Reading practice and test simulation with 20-minute timer, text highlighter, collapsible notes, tip strips, and detailed explanations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
