@@ -64,7 +64,7 @@ export const TestResultsModal: React.FC<TestResultsModalProps> = ({
             Test Performance Summary
           </h2>
           <p className="text-xs sm:text-sm text-slate-300 mt-1">
-            Passage 1: Reducing electricity consumption on the Isle of Eigg
+            Reading Passage 1: Sport Science in Australia
           </p>
         </div>
 

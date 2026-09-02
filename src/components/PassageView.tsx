@@ -351,35 +351,19 @@ export const PassageView: React.FC<PassageViewProps> = ({
 
         {/* Paragraphs */}
         <div
-          className="space-y-6 text-slate-700 font-serif leading-relaxed"
-          style={{ fontSize: `${fontSize}px`, lineHeight: 1.7 }}
+          className="space-y-5 text-slate-800 font-serif leading-relaxed"
+          style={{ fontSize: `${fontSize}px`, lineHeight: 1.75 }}
         >
           {PARAGRAPHS.map((p) => (
-            <div
+            <p
               key={p.id}
               id={`paragraph-${p.id}`}
               data-paragraph-id={p.id}
               ref={(el) => (paragraphRefs.current[p.id] = el)}
-              className="p-3.5 sm:p-4 rounded-lg transition-all duration-200 hover:bg-slate-50/80 border border-transparent hover:border-slate-200/80 group"
+              className="rounded-md px-2 py-1.5 transition-all duration-300 hover:bg-slate-50/70 text-justify tracking-normal"
             >
-              {p.sectionTitle && (
-                <h3 className="text-xs font-sans font-bold uppercase tracking-wider text-slate-700 mb-2.5 pb-1 border-b border-slate-200 flex items-center justify-between">
-                  <span>{p.sectionTitle}</span>
-                  <span className="text-[10px] font-mono text-slate-400 normal-case font-medium">
-                    Section
-                  </span>
-                </h3>
-              )}
-
-              <div className="flex items-start space-x-3">
-                <span className="inline-block shrink-0 px-2 py-0.5 rounded text-[11px] font-sans font-bold bg-slate-100 group-hover:bg-blue-50 text-slate-600 group-hover:text-blue-700 border border-slate-200 group-hover:border-blue-200 select-none mt-1">
-                  Paragraph {p.id}
-                </span>
-                <p className="flex-1 text-slate-700 tracking-normal text-justify">
-                  {renderParagraphContent(p.text, p.id)}
-                </p>
-              </div>
-            </div>
+              {renderParagraphContent(p.text, p.id)}
+            </p>
           ))}
         </div>
       </div>

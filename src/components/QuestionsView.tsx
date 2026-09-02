@@ -91,7 +91,7 @@ export const QuestionsView: React.FC<QuestionsViewProps> = ({
   const [isTipStrip1Open, setIsTipStrip1Open] = useState(true);
   const [isTipStrip2Open, setIsTipStrip2Open] = useState(true);
 
-  // Active question filter tab (All, 1-7 Short Answer, 8-13 T/F/NG)
+  // Active question filter tab (All, 1-5 Flow Chart, 6-13 T/F/NG)
   const [activeFilter, setActiveFilter] = useState<'all' | 'part1' | 'part2'>('all');
 
   // Handle text selection in questions
@@ -276,8 +276,8 @@ export const QuestionsView: React.FC<QuestionsViewProps> = ({
     return str.trim().split(/\s+/).filter(Boolean).length;
   };
 
-  const part1Questions = QUESTIONS.filter((q) => q.questionNumber <= 7);
-  const part2Questions = QUESTIONS.filter((q) => q.questionNumber >= 8);
+  const part1Questions = QUESTIONS.filter((q) => q.questionNumber <= 5);
+  const part2Questions = QUESTIONS.filter((q) => q.questionNumber >= 6);
 
   return (
     <div
@@ -435,7 +435,7 @@ export const QuestionsView: React.FC<QuestionsViewProps> = ({
                   : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
               }`}
             >
-              Q 1–7 (Short Answer)
+              Q 1–5 (Flow Chart)
             </button>
             <button
               id="filter-part2-btn"
@@ -446,7 +446,7 @@ export const QuestionsView: React.FC<QuestionsViewProps> = ({
                   : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
               }`}
             >
-              Q 8–13 (T/F/NG)
+              Q 6–13 (T/F/NG)
             </button>
           </div>
         </div>
@@ -488,29 +488,36 @@ export const QuestionsView: React.FC<QuestionsViewProps> = ({
 
       {/* Scrollable Questions Content */}
       <div className="p-4 sm:p-6 overflow-y-auto space-y-8 flex-1">
-        {/* SECTION 1: Questions 1-7 */}
+        {/* SECTION 1: Questions 1-5 */}
         {(activeFilter === 'all' || activeFilter === 'part1') && (
           <div className="space-y-6">
             <div className="bg-slate-900 text-white p-4 sm:p-5 rounded-xl shadow-sm border border-slate-800">
               <div className="flex items-center justify-between">
                 <span className="px-2.5 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider bg-slate-800 text-blue-400 border border-slate-700">
-                  Part 1: Questions 1–7
+                  Part 1: Questions 1–5
                 </span>
                 <span className="text-xs text-slate-300 font-medium">
-                  Short-answer Questions
+                  Flow Chart Completion
                 </span>
               </div>
               <h3 className="text-base sm:text-lg font-bold mt-2">
-                {renderHighlightedText('Answer the questions below.')}
+                {renderHighlightedText('Complete the flow chart below.')}
               </h3>
               <p className="text-xs text-slate-300 mt-1 font-medium">
-                Choose <span className="underline font-bold text-amber-300">NO MORE THAN TWO WORDS AND/OR A NUMBER</span> from the passage for each answer.
+                Choose <span className="underline font-bold text-amber-300">NO MORE THAN TWO WORDS</span> from the passage for each answer.
               </p>
               {explanationLanguage !== 'en' && (
                 <p className="text-[11px] text-blue-300/90 mt-1.5 italic">
-                  Hướng dẫn: Chọn không quá hai từ và/hoặc một số từ bài đọc cho mỗi câu trả lời.
+                  Hướng dẫn: Chọn không quá hai từ từ bài đọc cho mỗi câu trả lời.
                 </p>
               )}
+            </div>
+
+            {/* Flow Chart Header Box */}
+            <div className="bg-slate-100 border border-slate-200 rounded-lg py-2.5 px-4 text-center">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-700">
+                Flow Chart: The history of sports studies in Australia
+              </span>
             </div>
 
             {/* TIP STRIP: Questions 1-7 */}
@@ -745,13 +752,13 @@ export const QuestionsView: React.FC<QuestionsViewProps> = ({
           </div>
         )}
 
-        {/* SECTION 2: Questions 8-13 */}
+        {/* SECTION 2: Questions 6-13 */}
         {(activeFilter === 'all' || activeFilter === 'part2') && (
           <div className="space-y-6 pt-2">
             <div className="bg-slate-900 text-white p-4 sm:p-5 rounded-xl shadow-sm border border-slate-800">
               <div className="flex items-center justify-between">
                 <span className="px-2.5 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider bg-slate-800 text-blue-400 border border-slate-700">
-                  Part 2: Questions 8–13
+                  Part 2: Questions 6–13
                 </span>
                 <span className="text-xs text-slate-300 font-medium">
                   TRUE / FALSE / NOT GIVEN
@@ -760,7 +767,10 @@ export const QuestionsView: React.FC<QuestionsViewProps> = ({
               <h3 className="text-base sm:text-lg font-bold mt-2">
                 {renderHighlightedText('Do the following statements agree with the information given in Reading Passage 1?')}
               </h3>
-              <div className="text-xs text-slate-300 mt-2.5 space-y-1.5 font-medium bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
+              <p className="text-xs text-slate-300 mt-1 font-medium">
+                In boxes 6–13 on your answer sheet, write:
+              </p>
+              <div className="text-xs text-slate-300 mt-2 space-y-1.5 font-medium bg-slate-800/80 p-2.5 rounded-lg border border-slate-700">
                 <p>
                   <strong className="text-emerald-400 font-bold">TRUE</strong> — if the statement agrees with the information
                   {explanationLanguage !== 'en' && <span className="text-slate-400 italic ml-1">(thông tin trùng khớp với bài đọc)</span>}
@@ -776,7 +786,7 @@ export const QuestionsView: React.FC<QuestionsViewProps> = ({
               </div>
             </div>
 
-            {/* TIP STRIP: Questions 8-13 */}
+            {/* TIP STRIP: Questions 6-13 */}
             {mode === 'practice' && (
               <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 transition-all">
                 <div className="flex items-center justify-between mb-2">
