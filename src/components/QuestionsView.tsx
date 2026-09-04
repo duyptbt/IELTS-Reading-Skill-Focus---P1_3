@@ -24,6 +24,8 @@ import {
   BookOpen,
   Sparkles,
   ArrowRight,
+  ArrowDown,
+  X,
   Highlighter as HighlighterIcon,
   Plus,
   Languages
@@ -274,6 +276,35 @@ export const QuestionsView: React.FC<QuestionsViewProps> = ({
 
   const getWordCount = (str: string) => {
     return str.trim().split(/\s+/).filter(Boolean).length;
+  };
+
+  const parseFlowChartPrompt = (prompt: string, questionNumber: number) => {
+    // Pattern 1: prefix + questionNumber + dots + suffix
+    // e.g. "A lot of people identified as being 1 ...................."
+    const regex1 = new RegExp(`^(.*?)\\b${questionNumber}\\s*\\.{2,}(.*)$`);
+    const match1 = prompt.match(regex1);
+    if (match1) {
+      return {
+        prefix: match1[1].trim(),
+        suffix: match1[2].trim(),
+      };
+    }
+
+    // Pattern 2: questionNumber + dots + suffix (e.g. "4 .................... of PE graduates")
+    const regex2 = new RegExp(`^${questionNumber}\\s*\\.{2,}(.*)$`);
+    const match2 = prompt.match(regex2);
+    if (match2) {
+      return {
+        prefix: '',
+        suffix: match2[1].trim(),
+      };
+    }
+
+    // Fallback: strip dots and question number
+    return {
+      prefix: prompt.replace(/\.{2,}/g, '').replace(new RegExp(`\\b${questionNumber}\\b`), '').trim(),
+      suffix: '',
+    };
   };
 
   const part1Questions = QUESTIONS.filter((q) => q.questionNumber <= 5);
@@ -556,9 +587,9 @@ export const QuestionsView: React.FC<QuestionsViewProps> = ({
               </div>
             )}
 
-            {/* Questions 1-7 Items */}
-            <div className="space-y-4">
-              {part1Questions.map((q) => {
+            {/* Questions 1-5 Flow Chart Items */}
+            <div className="space-y-3">
+              {part1Questions.map((q, qIndex) => {
                 const answer = userAnswers[q.id] || '';
                 const wordCount = getWordCount(answer);
                 const isOverLimit = wordCount > 2;
@@ -567,136 +598,173 @@ export const QuestionsView: React.FC<QuestionsViewProps> = ({
                 const isFlagged = flaggedQuestions.has(q.id);
                 const showExplanation = openExplanations[q.id] || (isSubmitted && mode === 'test');
                 const showTip = openTips[q.id];
+                const parsed = parseFlowChartPrompt(q.prompt, q.questionNumber);
 
                 return (
-                  <div
-                    key={q.id}
-                    id={`question-card-${q.id}`}
-                    data-question-id={q.id}
-                    className={`p-4 sm:p-5 rounded-xl border transition-all ${
-                      isChecked
-                        ? isCorrect
-                          ? 'bg-emerald-50/50 border-emerald-300 ring-1 ring-emerald-200'
-                          : 'bg-rose-50/50 border-rose-300 ring-1 ring-rose-200'
-                        : 'bg-white border-slate-200 hover:border-slate-300 shadow-xs'
-                    }`}
-                  >
-                    {/* Card Header: Number, Prompt, and Flag */}
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex items-start space-x-3 flex-1">
-                        <span className="shrink-0 w-6 h-6 rounded bg-[#0F172A] text-white text-xs font-bold flex items-center justify-center shadow-xs">
-                          {q.questionNumber}
-                        </span>
+                  <React.Fragment key={q.id}>
+                    <div
+                      id={`question-card-${q.id}`}
+                      data-question-id={q.id}
+                      className={`p-4 sm:p-5 rounded-xl border transition-all ${
+                        isChecked
+                          ? isCorrect
+                            ? 'bg-emerald-50/50 border-emerald-300 ring-1 ring-emerald-200'
+                            : 'bg-rose-50/50 border-rose-300 ring-1 ring-rose-200'
+                          : 'bg-white border-slate-200 hover:border-slate-300 shadow-xs'
+                      }`}
+                    >
+                      {/* Flow Chart Step Content: Inline Question Number & Answer Box replacing dotted lines */}
+                      <div className="flex items-start justify-between gap-3">
                         <div className="flex-1">
-                          <p className="text-sm font-semibold text-slate-900 leading-snug">
-                            {renderHighlightedText(q.prompt, q.id)}
-                          </p>
+                          <div className="flex flex-wrap items-center gap-x-2.5 gap-y-2 text-sm sm:text-base font-semibold text-slate-900 leading-normal">
+                            {parsed.prefix && (
+                              <span className="text-slate-800">
+                                {renderHighlightedText(parsed.prefix, q.id)}
+                              </span>
+                            )}
+
+                            {/* Question Number Badge */}
+                            <span className="shrink-0 w-7 h-7 rounded-md bg-[#0F172A] text-white text-xs font-bold inline-flex items-center justify-center shadow-xs select-none">
+                              {q.questionNumber}
+                            </span>
+
+                            {/* Answer Box placed next to the number, replacing the dotted lines */}
+                            <div className="inline-flex items-center relative">
+                              <input
+                                id={`input-q-${q.id}`}
+                                type="text"
+                                disabled={isSubmitted && mode === 'test'}
+                                value={answer}
+                                onChange={(e) => onAnswerChange(q.id, e.target.value)}
+                                placeholder="Type answer..."
+                                className={`w-44 sm:w-56 px-3 py-1.5 text-sm font-medium rounded-lg border outline-none transition-all ${
+                                  isChecked
+                                    ? isCorrect
+                                      ? 'border-emerald-500 bg-emerald-50 text-emerald-950 ring-1 ring-emerald-300 font-semibold'
+                                      : 'border-rose-500 bg-rose-50 text-rose-950 ring-1 ring-rose-300 font-semibold'
+                                    : 'border-slate-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 bg-white hover:border-slate-400 text-slate-900 shadow-2xs'
+                                }`}
+                              />
+                              {answer && !(isSubmitted && mode === 'test') && (
+                                <button
+                                  type="button"
+                                  onClick={() => onAnswerChange(q.id, '')}
+                                  className="absolute right-2 text-slate-400 hover:text-slate-600 p-0.5 cursor-pointer"
+                                  title="Clear answer"
+                                >
+                                  <X className="w-3.5 h-3.5" />
+                                </button>
+                              )}
+                            </div>
+
+                            {parsed.suffix && (
+                              <span className="text-slate-800">
+                                {renderHighlightedText(parsed.suffix, q.id)}
+                              </span>
+                            )}
+
+                            {/* Status Indicator Badge when checked */}
+                            {isChecked && (
+                              <span
+                                className={`shrink-0 inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded border ${
+                                  isCorrect
+                                    ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
+                                    : 'text-rose-700 bg-rose-50 border-rose-200'
+                                }`}
+                              >
+                                {isCorrect ? '✓ Correct' : '✗ Incorrect'}
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Word Count Feedback */}
+                          <div className="flex items-center gap-2 text-[11px] mt-2 text-slate-500 font-normal">
+                            <span>
+                              Word count:{' '}
+                              <strong className={isOverLimit ? 'text-rose-600 font-bold' : 'text-slate-700'}>
+                                {wordCount}
+                              </strong>{' '}
+                              / 2 max
+                            </span>
+                            {isOverLimit && (
+                              <span className="text-rose-600 font-semibold flex items-center space-x-1">
+                                <Info className="w-3 h-3" />
+                                <span>Warning: Exceeds 2-word limit!</span>
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Flag Question Button */}
+                        <div className="shrink-0 flex items-center">
+                          <button
+                            id={`flag-q-${q.id}`}
+                            onClick={() => onToggleFlag(q.id)}
+                            title={isFlagged ? 'Remove flag' : 'Flag question for review'}
+                            className={`p-1.5 rounded transition-colors cursor-pointer ${
+                              isFlagged
+                                ? 'text-amber-600 bg-amber-100 hover:bg-amber-200'
+                                : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'
+                            }`}
+                          >
+                            <Flag className="w-3.5 h-3.5 fill-current" />
+                          </button>
                         </div>
                       </div>
 
-                      <div className="flex items-center space-x-1.5">
-                        <button
-                          id={`flag-q-${q.id}`}
-                          onClick={() => onToggleFlag(q.id)}
-                          title={isFlagged ? 'Remove flag' : 'Flag question for review'}
-                          className={`p-1.5 rounded transition-colors cursor-pointer ${
-                            isFlagged
-                              ? 'text-amber-600 bg-amber-100 hover:bg-amber-200'
-                              : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'
-                          }`}
-                        >
-                          <Flag className="w-3.5 h-3.5 fill-current" />
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Question Specific Tip (Practice Mode) */}
-                    {mode === 'practice' && q.tip && (
-                      <div className="mt-2.5">
-                        <button
-                          id={`tip-btn-q-${q.id}`}
-                          onClick={() => toggleTip(q.id)}
-                          className="flex items-center space-x-1.5 text-xs text-blue-700 hover:text-blue-900 font-medium py-0.5 px-2 rounded-md hover:bg-blue-50 transition-colors cursor-pointer"
-                        >
-                          <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
-                          <span>{showTip ? 'Hide Question Tip' : 'Show Question Tip'}</span>
-                        </button>
-                        {showTip && (
-                          <div className="mt-1.5 p-2.5 rounded-lg bg-blue-50/70 border border-blue-100 text-xs text-blue-950 leading-relaxed animate-in fade-in space-y-1">
-                            <p>
-                              <strong className="text-blue-900">Tip (English): </strong>
-                              {renderHighlightedText(q.tip, q.id)}
-                            </p>
-                            {explanationLanguage !== 'en' && q.tipVi && (
-                              <p className="text-[11px] text-blue-800 pt-1 border-t border-blue-100/80">
-                                <strong className="text-blue-900">🇻🇳 Mẹo làm bài: </strong>
-                                {q.tipVi}
+                      {/* Question Specific Tip (Practice Mode) */}
+                      {mode === 'practice' && q.tip && (
+                        <div className="mt-2.5 pt-2 border-t border-slate-100">
+                          <button
+                            id={`tip-btn-q-${q.id}`}
+                            onClick={() => toggleTip(q.id)}
+                            className="flex items-center space-x-1.5 text-xs text-blue-700 hover:text-blue-900 font-medium py-0.5 px-2 rounded-md hover:bg-blue-50 transition-colors cursor-pointer"
+                          >
+                            <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
+                            <span>{showTip ? 'Hide Question Tip' : 'Show Question Tip'}</span>
+                          </button>
+                          {showTip && (
+                            <div className="mt-1.5 p-2.5 rounded-lg bg-blue-50/70 border border-blue-100 text-xs text-blue-950 leading-relaxed animate-in fade-in space-y-1">
+                              <p>
+                                <strong className="text-blue-900">Tip (English): </strong>
+                                {renderHighlightedText(q.tip, q.id)}
                               </p>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    )}
+                              {explanationLanguage !== 'en' && q.tipVi && (
+                                <p className="text-[11px] text-blue-800 pt-1 border-t border-blue-100/80">
+                                  <strong className="text-blue-900">🇻🇳 Mẹo làm bài: </strong>
+                                  {q.tipVi}
+                                </p>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
 
-                    {/* Input Field */}
-                    <div className="mt-3">
-                      <div className="relative">
-                        <input
-                          id={`input-q-${q.id}`}
-                          type="text"
-                          disabled={isSubmitted && mode === 'test'}
-                          value={answer}
-                          onChange={(e) => onAnswerChange(q.id, e.target.value)}
-                          placeholder="Type your answer here..."
-                          className={`w-full px-3.5 py-2 text-sm rounded-lg border outline-none transition-all ${
-                            isChecked
-                              ? isCorrect
-                                ? 'border-emerald-500 bg-emerald-50/30 text-emerald-950 font-medium'
-                                : 'border-rose-500 bg-rose-50/30 text-rose-950 font-medium'
-                              : 'border-slate-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 bg-slate-50/50 hover:bg-white text-slate-900'
-                          }`}
-                        />
-                      </div>
+                      {/* Practice Mode Controls & Feedback */}
+                      {mode === 'practice' && (
+                        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-100">
+                          <button
+                            id={`check-btn-q-${q.id}`}
+                            onClick={() => handleCheckQuestion(q.id)}
+                            className="flex items-center space-x-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs font-semibold shadow-xs transition-colors cursor-pointer"
+                          >
+                            <CheckCircle className="w-3.5 h-3.5" />
+                            <span>Check Answer</span>
+                          </button>
 
-                      {/* Word count feedback */}
-                      <div className="flex items-center justify-between text-[11px] mt-1.5 text-slate-500">
-                        <span>
-                          Word count: <strong className={isOverLimit ? 'text-rose-600 font-bold' : 'text-slate-800'}>{wordCount}</strong> / 2 max
-                        </span>
-                        {isOverLimit && (
-                          <span className="text-rose-600 font-semibold flex items-center space-x-1">
-                            <Info className="w-3 h-3" />
-                            <span>Warning: Exceeds 2-word limit!</span>
-                          </span>
-                        )}
-                      </div>
-                    </div>
+                          <button
+                            id={`explain-btn-q-${q.id}`}
+                            onClick={() => toggleExplanation(q.id)}
+                            className="flex items-center space-x-1 text-xs text-blue-700 hover:text-blue-900 font-semibold py-1 px-2 rounded hover:bg-blue-50 transition-colors cursor-pointer"
+                          >
+                            <span>{showExplanation ? 'Hide Explanation' : 'Show Explanation'}</span>
+                            {showExplanation ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                          </button>
+                        </div>
+                      )}
 
-                    {/* Practice Mode Controls & Feedback */}
-                    {mode === 'practice' && (
-                      <div className="mt-3 flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slate-100">
-                        <button
-                          id={`check-btn-q-${q.id}`}
-                          onClick={() => handleCheckQuestion(q.id)}
-                          className="flex items-center space-x-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-xs font-semibold shadow-xs transition-colors cursor-pointer"
-                        >
-                          <CheckCircle className="w-3.5 h-3.5" />
-                          <span>Check Answer</span>
-                        </button>
-
-                        <button
-                          id={`explain-btn-q-${q.id}`}
-                          onClick={() => toggleExplanation(q.id)}
-                          className="flex items-center space-x-1 text-xs text-blue-700 hover:text-blue-900 font-semibold py-1 px-2 rounded hover:bg-blue-50 transition-colors cursor-pointer"
-                        >
-                          <span>{showExplanation ? 'Hide Explanation' : 'Show Explanation'}</span>
-                          {showExplanation ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                        </button>
-                      </div>
-                    )}
-
-                    {/* Detailed Explanation & Paragraph Evidence Box */}
-                    {showExplanation && (
+                      {/* Detailed Explanation & Paragraph Evidence Box */}
+                      {showExplanation && (
                       <div className="mt-3 p-3.5 rounded-lg bg-blue-50/60 border border-blue-200 text-xs text-slate-800 space-y-2.5 animate-in fade-in">
                         <div className="flex items-center justify-between pb-1.5 border-b border-blue-200/70">
                           <div className="flex items-center space-x-2">
@@ -746,13 +814,44 @@ export const QuestionsView: React.FC<QuestionsViewProps> = ({
                       </div>
                     )}
                   </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
 
-        {/* SECTION 2: Questions 6-13 */}
+                  {/* Connecting Flow Arrow between Flow Chart steps */}
+                  {qIndex < part1Questions.length - 1 && (
+                    <div className="flex justify-center my-1 text-slate-400 select-none">
+                      <div className="flex flex-col items-center">
+                        <div className="w-0.5 h-2.5 bg-slate-300" />
+                        <ArrowDown className="w-3.5 h-3.5 text-slate-400 -mt-0.5" />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Final Given Stage at the end of the Flow Chart */}
+                  {qIndex === part1Questions.length - 1 && (
+                    <>
+                      <div className="flex justify-center my-1 text-slate-400 select-none">
+                        <div className="flex flex-col items-center">
+                          <div className="w-0.5 h-2.5 bg-slate-300" />
+                          <ArrowDown className="w-3.5 h-3.5 text-slate-400 -mt-0.5" />
+                        </div>
+                      </div>
+                      <div className="p-3.5 bg-slate-100 border border-slate-200 rounded-xl text-center shadow-2xs">
+                        <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                          Final Stage (Given in text): Diversification of course delivery
+                        </span>
+                        <p className="text-[11px] text-slate-500 mt-0.5">
+                          Marks the conclusion of this historical development sequence in the passage
+                        </p>
+                      </div>
+                    </>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* SECTION 2: Questions 6-13 */}
         {(activeFilter === 'all' || activeFilter === 'part2') && (
           <div className="space-y-6 pt-2">
             <div className="bg-slate-900 text-white p-4 sm:p-5 rounded-xl shadow-sm border border-slate-800">
