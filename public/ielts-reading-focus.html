@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IELTS Reading Focus - Sport Science in Australia</title>
+  <meta name="description" content="Interactive single-file IELTS Reading test simulation and practice app for Sport Science in Australia." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --navy: #0f172a;
+      --navy-light: #1e293b;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #64748b;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--navy);
+      color: #ffffff;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .header-nav {
+      height: 64px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-icon {
+      background: var(--primary);
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .brand-title {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+    .brand-title span {
+      color: #60a5fa;
+    }
+    .brand-sub {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+    .mode-pills {
+      display: flex;
+      background: #1e293b;
+      padding: 4px;
+      border-radius: 9999px;
+      border: 1px solid #334155;
+      gap: 4px;
+    }
+    .mode-btn {
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      background: transparent;
+      color: #94a3b8;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .mode-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+    }
+    .mode-btn.consolidation-btn.active {
+      background: #f59e0b;
+      color: #0f172a;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .timer-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #1e293b;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #334155;
+      font-family: monospace;
+      font-size: 13px;
+      font-weight: 600;
+      color: #34d399;
+    }
+    .btn-finish {
+      background: #ffffff;
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 7px 14px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-finish:hover {
+      background: #f1f5f9;
+    }
+    .sub-toolbar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      height: 48px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .tool-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .hl-palette {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #f8fafc;
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .hl-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      border: 1px solid rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .hl-dot:hover, .hl-dot.active {
+      transform: scale(1.15);
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+    .btn-tool {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-tool:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+    .workspace {
+      flex: 1;
+      width: 100%;
+      padding: 12px 16px;
+      display: flex;
+      gap: 16px;
+      align-items: stretch;
+      max-width: 100%;
+    }
+    .pane {
+      flex: 1;
+      width: 50%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 140px);
+      min-height: 580px;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+    }
+    .pane-header {
+      padding: 12px 18px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
+    }
+    .pane-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+    }
+    /* Passage Typography */
+    .passage-content {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.8;
+      color: #1e293b;
+    }
+    .passage-title {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      line-height: 1.25;
+      color: #0f172a;
+    }
+    .passage-subtitle {
+      font-size: 13px;
+      font-style: italic;
+      color: #64748b;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .passage-content p {
+      margin-bottom: 18px;
+      text-align: justify;
+      padding: 4px 6px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .passage-content p:hover {
+      background: #f8fafc;
+    }
+    /* Highlights */
+    .hl-yellow { background-color: #fef08a !important; cursor: pointer; border-radius: 2px; }
+    .hl-green { background-color: #bbf7d0 !important; cursor: pointer; border-radius: 2px; }
+    .hl-cyan { background-color: #bae6fd !important; cursor: pointer; border-radius: 2px; }
+    .hl-pink { background-color: #fbcfe8 !important; cursor: pointer; border-radius: 2px; }
+    /* Questions styling */
+    .section-banner {
+      background: var(--navy);
+      color: #ffffff;
+      padding: 16px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+    .section-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: #1e293b;
+      color: #60a5fa;
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid #334155;
+      margin-bottom: 6px;
+    }
+    .section-heading {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .section-desc {
+      font-size: 12px;
+      color: #cbd5e1;
+    }
+    .tip-strip {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+    }
+    .tip-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: #1e40af;
+    }
+    .tip-toggle-btn {
+      background: transparent;
+      border: none;
+      color: #2563eb;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .tip-content {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #1e3a8a;
+      line-height: 1.6;
+    }
+    .tip-content ul {
+      padding-left: 18px;
+    }
+    .tip-content li {
+      margin-bottom: 6px;
+    }
+    /* Flow chart card */
+    .flow-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 2px 0 rgba(0,0,0,0.03);
+      transition: all 0.2s;
+    }
+    .flow-card.correct {
+      border-color: #86efac;
+      background: #f0fdf4;
+    }
+    .flow-card.incorrect {
+      border-color: #fca5a5;
+      background: #fef2f2;
+    }
+    .flow-inline-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .q-badge {
+      width: 26px;
+      height: 26px;
+      background: var(--navy);
+      color: #ffffff;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .q-input {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      font-size: 14px;
+      font-weight: 500;
+      color: #0f172a;
+      outline: none;
+      width: 190px;
+      transition: all 0.2s;
+    }
+    .q-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+    .flow-arrow {
+      display: flex;
+      justify-content: center;
+      color: #94a3b8;
+      font-size: 14px;
+      margin: 4px 0;
+    }
+    .flow-final-stage {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 24px;
+    }
+    /* T/F/NG options */
+    .tfng-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 2px 0 rgba(0,0,0,0.03);
+    }
+    .tfng-card.correct {
+      border-color: #86efac;
+      background: #f0fdf4;
+    }
+    .tfng-card.incorrect {
+      border-color: #fca5a5;
+      background: #fef2f2;
+    }
+    .tfng-options {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .tfng-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      font-size: 12px;
+      font-weight: 700;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .tfng-btn:hover {
+      background: #e2e8f0;
+    }
+    .tfng-btn.selected {
+      background: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
+    }
+    .btn-check-q {
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .explanation-box {
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #1e3a8a;
+      line-height: 1.5;
+    }
+    .explanation-box strong {
+      color: #1e40af;
+    }
+    .word-count-badge {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 4px;
+    }
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-box {
+      background: #ffffff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 480px;
+      padding: 24px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .modal-score {
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 12px 0 4px;
+    }
+    .modal-band {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1e40af;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+    /* Mobile responsive */
+    @media (max-width: 992px) {
+      .workspace {
+        flex-direction: column;
+      }
+      .pane {
+        width: 100%;
+        height: auto;
+        min-height: 480px;
+      }
+      .q-input {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header>
+    <div class="header-nav">
+      <div class="brand">
+        <div class="brand-icon">📖</div>
+        <div>
+          <div class="brand-title">IELTS Reading <span>Focus</span></div>
+          <div class="brand-sub">Sport Science in Australia</div>
+        </div>
+      </div>
+
+      <!-- Mode Selector -->
+      <div class="mode-pills">
+        <button class="mode-btn active" id="btn-mode-practice" onclick="setMode('practice')">
+          💡 Practice Mode
+        </button>
+        <button class="mode-btn" id="btn-mode-test" onclick="setMode('test')">
+          ⏱️ Test Mode
+        </button>
+        <button class="mode-btn consolidation-btn" id="btn-mode-consolidation" onclick="setMode('consolidation')">
+          ✨ Consolidation
+        </button>
+      </div>
+
+      <!-- Action & Timer -->
+      <div class="header-actions">
+        <div class="timer-badge" id="timer-display">
+          <span>⏱️ 20:00</span>
+        </div>
+        <button class="btn-finish" id="btn-finish-test" onclick="submitTest()">
+          ✓ Finish Session
+        </button>
+      </div>
+    </div>
+
+    <!-- Sub Toolbar -->
+    <div class="sub-toolbar">
+      <div class="tool-group">
+        <span style="font-size: 12px; font-weight: 700; color: #64748b;">Highlighter:</span>
+        <div class="hl-palette">
+          <div class="hl-dot" style="background: #fef08a;" onclick="setHighlighter('yellow')" title="Yellow"></div>
+          <div class="hl-dot" style="background: #bbf7d0;" onclick="setHighlighter('green')" title="Green"></div>
+          <div class="hl-dot" style="background: #bae6fd;" onclick="setHighlighter('cyan')" title="Cyan"></div>
+          <div class="hl-dot" style="background: #fbcfe8;" onclick="setHighlighter('pink')" title="Pink"></div>
+        </div>
+        <button class="btn-tool" onclick="clearHighlights()">Clear Highlights</button>
+      </div>
+
+      <div class="tool-group">
+        <button class="btn-tool" onclick="changeFontSize(-1)">A-</button>
+        <button class="btn-tool" onclick="changeFontSize(1)">A+</button>
+        <button class="btn-tool" onclick="resetAll()">🔄 Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Workspace Container (Maximized Full Width) -->
+  <main class="workspace" id="main-workspace">
+    
+    <!-- Left Pane: Reading Passage 1 -->
+    <section class="pane" id="passage-pane">
+      <div class="pane-header">
+        <span>📖 Reading Passage 1</span>
+        <span style="text-transform: none; color: #94a3b8; font-weight: 500;">Estimated: 20 mins</span>
+      </div>
+      <div class="pane-body">
+        <div class="passage-content" id="passage-text">
+          <h1 class="passage-title">Sport Science in Australia</h1>
+          <p class="passage-subtitle">You should spend about 20 minutes on Questions 1–13, which are based on Reading Passage 1 below.</p>
+
+          <p id="p-1" data-p="1">The professional career paths available to graduates from courses relating to human movement and sport science are as diverse as the graduate's imagination. However, undergraduate courses with this type of content, in Australia as well as in most other Western countries, were originally designed as preparation programmes for Physical Education (PE) teachers.</p>
+
+          <p id="p-2" data-p="2">The initial programmes commenced soon after the conclusion of World War II in the mid-1940s. One of the primary motives for these initiatives was the fact that, during the war effort, so many of the men who were assessed for military duty had been declared unfit. The government saw the solution in the providing of Physical Education programmes in schools, delivered by better prepared and specifically educated PE teachers.</p>
+
+          <p id="p-3" data-p="3">Later, in the 1970s and early 1980s, the surplus of Australians graduating with a PE degree obliged institutions delivering this qualification to identify new employment opportunities for their graduates, resulting in the first appearance of degrees catering for recreation professionals. In many instances, this diversity of programme delivery merely led to degrees, delivered by physical educators, as a side-line activity to the production of PE teachers.</p>
+
+          <p id="p-4" data-p="4">Whilst the need to produce Physical Education teachers remains a significant social need, and most developed societies demand the availability of quality leisure programmes for their citizens, the career options of graduates within this domain are still developing. The two most evident growth domains are in the area of the professional delivery of sport, and the role of a physical lifestyle for community health.</p>
+
+          <p id="p-5" data-p="5">The sports industry is developing at an unprecedented rate of growth. From a business perspective, sport is now seen as an area with the potential for high returns. It is quite significant that the businessman Rupert Murdoch broadened his business base from media to sport, having purchased an American baseball team and an Australian Rugby League competition, as well as seeking opportunities to invest in an English football club. No business person of such international stature would see fit to invest in sport unless he was satisfied that this was a sound business venture with ideal revenue-generating opportunities.</p>
+
+          <p id="p-6" data-p="6">These developments have confirmed sport as a business with professional management structures, marketing processes, and development strategies in place. They have indicated new and developing career paths for graduates of human movement science, sport science, exercise science and related degrees. Graduates can now visualise career paths extending into such diverse domains as sport management, sport marketing, event and facility management, government policy development pertaining to sport, sport journalism, sport psychology, and sport or athletic coaching.</p>
+
+          <p id="p-7" data-p="7">Business leaders will only continue their enthusiasm for sport if they receive returns for their money. Such returns will only be forthcoming if astute, enthusiastic and properly educated professionals are delivering the programs that earn appropriate financial returns. The successful universities of the 21st century will be those that have responded to this challenge by delivering such degrees.</p>
+
+          <p id="p-8" data-p="8">A second professional growth area for this group of graduates is associated with community health. The increasing demand for government expenditure within health budgets is reaching the stage where most governments are simply unable to function in a manner that is satisfying their constituents. One of the primary reasons for this problem is the unhelpful emphasis on treatment in medical care programmes. Governments have traditionally given their senior health official the title of 'Minister for Health', when in fact this officer has functioned as 'Minister for Sickness and the Construction of Hospitals'. Government focus simply has to change. If the change is not brought about for philosophical reasons, it will occur naturally, because insufficient funding will be available to address the ever-increasing costs of medical support.</p>
+
+          <p id="p-9" data-p="9">Graduates of human movement, exercise science and sport science have the potential to become major players in this shift in policy focus. It is these graduates who already have the skills, knowledge and understanding to initiate community health education programmes to reduce cardio-vascular disease, to reduce medical dependency upon diabetes, to improve workplace health leading to increased productivity, to initiate and promote programmes of activity for the elderly that reduce medical dependency, and to maintain an active lifestyle for the unemployed and disadvantaged groups in society. This is the graduate that governments will be calling upon to shift the community focus from medical dependency to healthy lifestyles in the decades ahead.</p>
+
+          <p id="p-10" data-p="10">The career paths of these graduates are developing at a pace that is not evident in other professions. The contribution that these graduates can make to society, and the recognition of this contribution is at an unprecedented high, and all indications are that it will continue to grow.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right Pane: Questions & Exercises -->
+    <section class="pane" id="questions-pane">
+      <div class="pane-header">
+        <span>📝 Questions 1–13</span>
+        <span id="score-counter" style="color: #2563eb;">Answered: 0/13</span>
+      </div>
+      <div class="pane-body" id="questions-container">
+        
+        <!-- SECTION 1: Flow Chart Questions 1-5 -->
+        <div class="section-banner">
+          <span class="section-tag">Part 1: Questions 1–5</span>
+          <h2 class="section-heading">Complete the flow chart below.</h2>
+          <p class="section-desc">Choose <strong>NO MORE THAN TWO WORDS</strong> from the passage for each answer.</p>
+        </div>
+
+        <!-- IELTS TIP: Collapsed by default -->
+        <div class="tip-strip">
+          <div class="tip-header">
+            <span>💡 IELTS Tip: Scanning & Flow Chart Strategy</span>
+            <button class="tip-toggle-btn" id="tip-1-toggle" onclick="toggleTip('tip-1-body', 'tip-1-toggle')">Show</button>
+          </div>
+          <div class="tip-content" id="tip-1-body" style="display: none;">
+            <ul>
+              <li>The title shows this flow chart is chronological. Answers are located in Paragraphs 1 to 3.</li>
+              <li>Strict word count: <strong>NO MORE THAN TWO WORDS</strong>. Numbers or hyphenated words count as single words.</li>
+              <li>Notice the final stage box (given in text). It signals exactly where this part ends.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; text-align: center; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 14px; text-transform: uppercase;">
+          Flow Chart: The history of sports studies in Australia
+        </div>
+
+        <!-- Question 1 -->
+        <div class="flow-card" id="card-q1">
+          <div class="flow-inline-row">
+            <span>A lot of people identified as being</span>
+            <span class="q-badge">1</span>
+            <input type="text" class="q-input" id="input-q1" placeholder="Type answer..." oninput="onAnswerInput(1)" />
+          </div>
+          <div class="word-count-badge" id="wc-q1">Word count: 0 / 2 max</div>
+          <button class="btn-check-q" onclick="checkSingleQuestion(1)">Check Answer</button>
+          <div class="explanation-box" id="exp-q1" style="display: none;">
+            <strong>Official Answer:</strong> unfit<br />
+            <strong>Evidence (Paragraph 2):</strong> "...so many of the men who were assessed for military duty had been declared unfit."
+          </div>
+        </div>
+
+        <div class="flow-arrow">↓</div>
+
+        <!-- Question 2 -->
+        <div class="flow-card" id="card-q2">
+          <div class="flow-inline-row">
+            <span>Introduction of PE to</span>
+            <span class="q-badge">2</span>
+            <input type="text" class="q-input" id="input-q2" placeholder="Type answer..." oninput="onAnswerInput(2)" />
+          </div>
+          <div class="word-count-badge" id="wc-q2">Word count: 0 / 2 max</div>
+          <button class="btn-check-q" onclick="checkSingleQuestion(2)">Check Answer</button>
+          <div class="explanation-box" id="exp-q2" style="display: none;">
+            <strong>Official Answer:</strong> schools<br />
+            <strong>Evidence (Paragraph 2):</strong> "The government saw the solution in the providing of Physical Education programmes in schools..."
+          </div>
+        </div>
+
+        <div class="flow-arrow">↓</div>
+
+        <!-- Question 3 -->
+        <div class="flow-card" id="card-q3">
+          <div class="flow-inline-row">
+            <span>Special training programmes for</span>
+            <span class="q-badge">3</span>
+            <input type="text" class="q-input" id="input-q3" placeholder="Type answer..." oninput="onAnswerInput(3)" />
+          </div>
+          <div class="word-count-badge" id="wc-q3">Word count: 0 / 2 max</div>
+          <button class="btn-check-q" onclick="checkSingleQuestion(3)">Check Answer</button>
+          <div class="explanation-box" id="exp-q3" style="display: none;">
+            <strong>Official Answer:</strong> PE teachers (or teachers)<br />
+            <strong>Evidence (Paragraph 1 & 2):</strong> "...delivered by better prepared and specifically educated PE teachers."
+          </div>
+        </div>
+
+        <div class="flow-arrow">↓</div>
+
+        <!-- Question 4 -->
+        <div class="flow-card" id="card-q4">
+          <div class="flow-inline-row">
+            <span class="q-badge">4</span>
+            <input type="text" class="q-input" id="input-q4" placeholder="Type answer..." oninput="onAnswerInput(4)" />
+            <span>of PE graduates</span>
+          </div>
+          <div class="word-count-badge" id="wc-q4">Word count: 0 / 2 max</div>
+          <button class="btn-check-q" onclick="checkSingleQuestion(4)">Check Answer</button>
+          <div class="explanation-box" id="exp-q4" style="display: none;">
+            <strong>Official Answer:</strong> surplus<br />
+            <strong>Evidence (Paragraph 3):</strong> "Later, in the 1970s and early 1980s, the surplus of Australians graduating with a PE degree obliged institutions..."
+          </div>
+        </div>
+
+        <div class="flow-arrow">↓</div>
+
+        <!-- Question 5 -->
+        <div class="flow-card" id="card-q5">
+          <div class="flow-inline-row">
+            <span>Identification of alternative</span>
+            <span class="q-badge">5</span>
+            <input type="text" class="q-input" id="input-q5" placeholder="Type answer..." oninput="onAnswerInput(5)" />
+          </div>
+          <div class="word-count-badge" id="wc-q5">Word count: 0 / 2 max</div>
+          <button class="btn-check-q" onclick="checkSingleQuestion(5)">Check Answer</button>
+          <div class="explanation-box" id="exp-q5" style="display: none;">
+            <strong>Official Answer:</strong> employment opportunities<br />
+            <strong>Evidence (Paragraph 3):</strong> "...obliged institutions delivering this qualification to identify new employment opportunities for their graduates..."
+          </div>
+        </div>
+
+        <div class="flow-arrow">↓</div>
+
+        <!-- Final Given Stage -->
+        <div class="flow-final-stage">
+          Final Stage (Given in text): Diversification of course delivery
+        </div>
+
+
+        <!-- SECTION 2: True/False/Not Given Questions 6-13 -->
+        <div class="section-banner" style="margin-top: 32px;">
+          <span class="section-tag">Part 2: Questions 6–13</span>
+          <h2 class="section-heading">Do the following statements agree with the information in Reading Passage 1?</h2>
+          <p class="section-desc">Write <strong>TRUE</strong>, <strong>FALSE</strong>, or <strong>NOT GIVEN</strong>.</p>
+        </div>
+
+        <!-- IELTS TIP 2: Collapsed by default -->
+        <div class="tip-strip">
+          <div class="tip-header">
+            <span>💡 IELTS Tip: TRUE / FALSE / NOT GIVEN Strategy</span>
+            <button class="tip-toggle-btn" id="tip-2-toggle" onclick="toggleTip('tip-2-body', 'tip-2-toggle')">Show</button>
+          </div>
+          <div class="tip-content" id="tip-2-body" style="display: none;">
+            <ul>
+              <li><strong>TRUE:</strong> The statement exactly reflects the meaning in the passage.</li>
+              <li><strong>FALSE:</strong> The statement contradicts or is opposite to what the passage says.</li>
+              <li><strong>NOT GIVEN:</strong> The passage does not give enough information to confirm or deny.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Q6 to Q13 List -->
+        <div id="tfng-list"></div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal for Results -->
+  <div class="modal-overlay" id="results-modal">
+    <div class="modal-box">
+      <h2 style="font-size: 20px; font-weight: 700; color: #0f172a;">Session Completed!</h2>
+      <p style="font-size: 13px; color: #64748b; margin-top: 4px;">Here is your test performance:</p>
+      <div class="modal-score" id="modal-score-text">0 / 13</div>
+      <div class="modal-band" id="modal-band-text">Estimated Band: 0.0</div>
+      <div id="modal-breakdown" style="font-size: 13px; color: #334155; margin-bottom: 20px; text-align: left; background: #f8fafc; padding: 12px; border-radius: 8px;"></div>
+      <button class="btn-finish" style="background: var(--primary); color: #fff; width: 100%; justify-content: center; padding: 10px;" onclick="closeModal()">
+        Review Explanations
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Question Specifications
+    const QUESTIONS = [
+      { id: 1, type: 'flow', prompt: 'A lot of people identified as being 1 ....................', answers: ['unfit'], pRef: 2, exp: 'Paragraph 2 confirms men assessed for duty had been declared unfit.' },
+      { id: 2, type: 'flow', prompt: 'Introduction of PE to 2 ....................', answers: ['schools'], pRef: 2, exp: 'Paragraph 2 states the solution was providing PE programmes in schools.' },
+      { id: 3, type: 'flow', prompt: 'Special training programmes for 3 ....................', answers: ['pe teachers', 'teachers'], pRef: 2, exp: 'Paragraph 2 notes programmes delivered by specifically educated PE teachers.' },
+      { id: 4, type: 'flow', prompt: '4 .................... of PE graduates', answers: ['surplus'], pRef: 3, exp: 'Paragraph 3 notes in the 1970s the surplus of Australians graduating with a PE degree obliged institutions...' },
+      { id: 5, type: 'flow', prompt: 'Identification of alternative 5 ....................', answers: ['employment opportunities', 'career options'], pRef: 3, exp: 'Paragraph 3 notes identifying new employment opportunities for their graduates.' },
+      { id: 6, type: 'tfng', text: 'Rupert Murdoch encountered difficulties in his attempt to invest in an English football club.', answer: 'NOT GIVEN', pRef: 5, exp: 'The text notes Murdoch sought opportunities to invest in an English club, but doesn’t say whether he had difficulties.' },
+      { id: 7, type: 'tfng', text: 'Murdoch believed that sport would be profitable.', answer: 'TRUE', pRef: 5, exp: 'Paragraph 5 states he would not invest unless satisfied this was a sound business venture with ideal revenue.' },
+      { id: 8, type: 'tfng', text: 'Universities are producing too many sport science graduates.', answer: 'NOT GIVEN', pRef: 7, exp: 'Paragraph 7 discusses universities delivering such degrees, but never states they produce too many graduates.' },
+      { id: 9, type: 'tfng', text: 'Australian sports degrees are recognised throughout the world.', answer: 'NOT GIVEN', pRef: 6, exp: 'The passage doesn’t mention international recognition of Australian degrees.' },
+      { id: 10, type: 'tfng', text: 'Increased government funding has failed to solve the problems in the medical sector.', answer: 'FALSE', pRef: 8, exp: 'The text says insufficient funding will be available and governments emphasize sickness/treatment, rather than increased funding failing.' },
+      { id: 11, type: 'tfng', text: 'Some senior health officials oppose changes in healthcare expenditure.', answer: 'NOT GIVEN', pRef: 8, exp: 'Paragraph 8 mentions senior health officials titles, but not their personal opposition to changes.' },
+      { id: 12, type: 'tfng', text: 'Graduates of sport science will help create programmes to reduce lifestyle illnesses.', answer: 'TRUE', pRef: 9, exp: 'Paragraph 9 lists initiating programmes to reduce cardio-vascular disease and diabetes.' },
+      { id: 13, type: 'tfng', text: 'Public acknowledgement of the role of sport science graduates is expected to decrease.', answer: 'FALSE', pRef: 10, exp: 'Paragraph 10 says recognition is at an unprecedented high, and will continue to grow.' }
+    ];
+
+    // User State
+    let userAnswers = {};
+    let activeHighlighter = null;
+    let fontSize = 17;
+    let mode = 'practice';
+    let timerSeconds = 1200;
+    let timerInterval = null;
+
+    // Render T/F/NG Items
+    function renderTFNG() {
+      const container = document.getElementById('tfng-list');
+      const tfngQuestions = QUESTIONS.filter(q => q.type === 'tfng');
+      container.innerHTML = tfngQuestions.map(q => `
+        <div class="tfng-card" id="card-q${q.id}">
+          <div style="display: flex; gap: 10px; align-items: flex-start;">
+            <span class="q-badge">${q.id}</span>
+            <p style="font-size: 14px; font-weight: 600; color: #0f172a; flex: 1;">${q.text}</p>
+          </div>
+          <div class="tfng-options">
+            <button class="tfng-btn" id="opt-${q.id}-TRUE" onclick="selectTFNG(${q.id}, 'TRUE')">TRUE</button>
+            <button class="tfng-btn" id="opt-${q.id}-FALSE" onclick="selectTFNG(${q.id}, 'FALSE')">FALSE</button>
+            <button class="tfng-btn" id="opt-${q.id}-NOT GIVEN" onclick="selectTFNG(${q.id}, 'NOT GIVEN')">NOT GIVEN</button>
+          </div>
+          <button class="btn-check-q" onclick="checkSingleQuestion(${q.id})">Check Answer</button>
+          <div class="explanation-box" id="exp-q${q.id}" style="display: none;">
+            <strong>Official Answer:</strong> ${q.answer}<br />
+            <strong>Evidence (Paragraph ${q.pRef}):</strong> ${q.exp}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Toggle IELTS Tips
+    function toggleTip(bodyId, toggleBtnId) {
+      const el = document.getElementById(bodyId);
+      const btn = document.getElementById(toggleBtnId);
+      if (el.style.display === 'none') {
+        el.style.display = 'block';
+        btn.textContent = 'Hide';
+      } else {
+        el.style.display = 'none';
+        btn.textContent = 'Show';
+      }
+    }
+
+    // Input handlers
+    function onAnswerInput(qId) {
+      const input = document.getElementById(`input-q${qId}`);
+      const val = input.value;
+      userAnswers[qId] = val;
+      updateWordCount(qId, val);
+      updateScoreCounter();
+    }
+
+    function updateWordCount(qId, text) {
+      const words = text.trim().split(/\s+/).filter(Boolean).length;
+      const wcEl = document.getElementById(`wc-q${qId}`);
+      if (wcEl) {
+        wcEl.textContent = `Word count: ${words} / 2 max`;
+        wcEl.style.color = words > 2 ? '#dc2626' : '#64748b';
+      }
+    }
+
+    function selectTFNG(qId, option) {
+      userAnswers[qId] = option;
+      ['TRUE', 'FALSE', 'NOT GIVEN'].forEach(opt => {
+        const btn = document.getElementById(`opt-${qId}-${opt}`);
+        if (btn) {
+          if (opt === option) {
+            btn.classList.add('selected');
+          } else {
+            btn.classList.remove('selected');
+          }
+        }
+      });
+      updateScoreCounter();
+    }
+
+    function checkSingleQuestion(qId) {
+      const q = QUESTIONS.find(item => item.id === qId);
+      const userAns = (userAnswers[qId] || '').trim();
+      const card = document.getElementById(`card-q${qId}`);
+      const exp = document.getElementById(`exp-q${qId}`);
+
+      let isCorrect = false;
+      if (q.type === 'flow') {
+        isCorrect = q.answers.some(ans => ans.toLowerCase() === userAns.toLowerCase());
+      } else {
+        isCorrect = (q.answer.toLowerCase() === userAns.toLowerCase());
+      }
+
+      card.classList.remove('correct', 'incorrect');
+      card.classList.add(isCorrect ? 'correct' : 'incorrect');
+      if (exp) exp.style.display = 'block';
+    }
+
+    function updateScoreCounter() {
+      const count = Object.values(userAnswers).filter(val => typeof val === 'string' && val.trim().length > 0).length;
+      document.getElementById('score-counter').textContent = `Answered: ${count}/13`;
+    }
+
+    // Highlighting
+    function setHighlighter(color) {
+      activeHighlighter = color;
+      const selection = window.getSelection();
+      if (!selection.isCollapsed && selection.rangeCount > 0) {
+        applyHighlight(selection.getRangeAt(0), color);
+        selection.removeAllRanges();
+      }
+    }
+
+    function applyHighlight(range, color) {
+      const span = document.createElement('span');
+      span.className = `hl-${color}`;
+      span.onclick = function() { span.outerHTML = span.innerHTML; };
+      range.surroundContents(span);
+    }
+
+    function clearHighlights() {
+      const marks = document.querySelectorAll('.hl-yellow, .hl-green, .hl-cyan, .hl-pink');
+      marks.forEach(m => m.outerHTML = m.innerHTML);
+    }
+
+    // Font Sizing
+    function changeFontSize(delta) {
+      fontSize = Math.max(14, Math.min(24, fontSize + delta));
+      document.getElementById('passage-text').style.fontSize = `${fontSize}px`;
+    }
+
+    // Timer & Modes
+    function setMode(newMode) {
+      mode = newMode;
+      document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(`btn-mode-${newMode}`).classList.add('active');
+
+      if (newMode === 'test') {
+        startTimer();
+      } else {
+        pauseTimer();
+      }
+    }
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        if (timerSeconds <= 0) {
+          clearInterval(timerInterval);
+          submitTest();
+          return;
+        }
+        timerSeconds--;
+        const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
+        const s = (timerSeconds % 60).toString().padStart(2, '0');
+        document.getElementById('timer-display').innerHTML = `<span>⏱️ ${m}:${s}</span>`;
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+    }
+
+    function submitTest() {
+      let correct = 0;
+      QUESTIONS.forEach(q => {
+        const userAns = (userAnswers[q.id] || '').trim();
+        let isRight = false;
+        if (q.type === 'flow') {
+          isRight = q.answers.some(ans => ans.toLowerCase() === userAns.toLowerCase());
+        } else {
+          isRight = (q.answer.toLowerCase() === userAns.toLowerCase());
+        }
+        if (isRight) correct++;
+        checkSingleQuestion(q.id);
+      });
+
+      // Calculate band estimation for 13 questions
+      const band = correct >= 12 ? '9.0' : correct >= 10 ? '8.0' : correct >= 8 ? '7.0' : correct >= 6 ? '6.0' : correct >= 4 ? '5.0' : '4.0';
+
+      document.getElementById('modal-score-text').textContent = `${correct} / 13`;
+      document.getElementById('modal-band-text').textContent = `Estimated Band: ${band}`;
+      document.getElementById('modal-breakdown').innerHTML = `
+        <p>• Flow Chart Score (Q1-5): ${QUESTIONS.filter(q => q.type==='flow' && q.answers.includes((userAnswers[q.id]||'').toLowerCase())).length} / 5</p>
+        <p>• True/False/Not Given (Q6-13): ${QUESTIONS.filter(q => q.type==='tfng' && q.answer===(userAnswers[q.id]||'')).length} / 8</p>
+      `;
+      document.getElementById('results-modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('results-modal').style.display = 'none';
+    }
+
+    function resetAll() {
+      userAnswers = {};
+      timerSeconds = 1200;
+      document.getElementById('timer-display').innerHTML = `<span>⏱️ 20:00</span>`;
+      document.querySelectorAll('.q-input').forEach(i => i.value = '');
+      document.querySelectorAll('.tfng-btn').forEach(b => b.classList.remove('selected'));
+      document.querySelectorAll('.flow-card, .tfng-card').forEach(c => c.classList.remove('correct', 'incorrect'));
+      document.querySelectorAll('.explanation-box').forEach(e => e.style.display = 'none');
+      updateScoreCounter();
+      clearHighlights();
+    }
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+      renderTFNG();
+    });
+  </script>
+</body>
+</html>
