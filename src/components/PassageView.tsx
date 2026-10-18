@@ -267,7 +267,7 @@ export const PassageView: React.FC<PassageViewProps> = ({
       ref={containerRef}
       onMouseUp={handleMouseUp}
       className="relative flex-1 bg-white border border-slate-200 rounded-xl shadow-xs overflow-hidden select-text flex flex-col"
-      style={{ minHeight: '580px', maxHeight: 'calc(100vh - 170px)' }}
+      style={{ minHeight: '580px', maxHeight: 'calc(100vh - 140px)' }}
     >
       {/* Sleek Top Section Header */}
       <div className="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center shrink-0">

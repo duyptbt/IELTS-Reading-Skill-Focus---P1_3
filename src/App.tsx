@@ -400,12 +400,12 @@ export default function App() {
       </div>
 
       {/* Main Dual-Pane / Masterclass Workspace */}
-      <main className="flex-1 w-full max-w-[1600px] mx-auto p-3 sm:p-4 md:p-5 flex flex-col lg:flex-row gap-4 items-stretch">
+      <main className="flex-1 w-full max-w-none px-2 sm:px-3 lg:px-4 py-2 sm:py-3 flex flex-col lg:flex-row gap-3 lg:gap-4 items-stretch">
         {/* Left: Passage View (Hidden when consolidation is in full width mode) */}
         {!(mode === 'consolidation' && consolidationLayout === 'full') && (
           <div
             className={`w-full ${
-              mode === 'consolidation' ? 'lg:w-1/2' : 'lg:w-[52%] xl:w-[55%]'
+              mode === 'consolidation' ? 'lg:w-1/2' : 'lg:w-1/2 flex-1 min-w-0'
             } flex flex-col ${
               mobileTab === 'questions' ? 'hidden lg:flex' : 'flex'
             }`}
@@ -431,7 +431,7 @@ export default function App() {
               ? 'lg:w-full'
               : mode === 'consolidation'
               ? 'lg:w-1/2'
-              : 'lg:w-[48%] xl:w-[45%]'
+              : 'lg:w-1/2 flex-1 min-w-0'
           } flex flex-col ${
             mobileTab === 'passage' ? 'hidden lg:flex' : 'flex'
           }`}

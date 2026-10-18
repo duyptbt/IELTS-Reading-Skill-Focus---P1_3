@@ -89,9 +89,9 @@ export const QuestionsView: React.FC<QuestionsViewProps> = ({
     }
   }, [isSubmitted, userAnswers]);
 
-  // Tip strip collapse state
-  const [isTipStrip1Open, setIsTipStrip1Open] = useState(true);
-  const [isTipStrip2Open, setIsTipStrip2Open] = useState(true);
+  // Tip strip collapse state (hidden by default)
+  const [isTipStrip1Open, setIsTipStrip1Open] = useState(false);
+  const [isTipStrip2Open, setIsTipStrip2Open] = useState(false);
 
   // Active question filter tab (All, 1-5 Flow Chart, 6-13 T/F/NG)
   const [activeFilter, setActiveFilter] = useState<'all' | 'part1' | 'part2'>('all');
@@ -315,7 +315,7 @@ export const QuestionsView: React.FC<QuestionsViewProps> = ({
       ref={containerRef}
       onMouseUp={handleMouseUp}
       className="relative flex-1 bg-white border border-slate-200 rounded-xl shadow-xs overflow-hidden select-text flex flex-col"
-      style={{ minHeight: '580px', maxHeight: 'calc(100vh - 170px)' }}
+      style={{ minHeight: '580px', maxHeight: 'calc(100vh - 140px)' }}
     >
       {/* Sleek Top Header with Language Preference Toggle */}
       <div className="p-4 border-b border-slate-100 bg-slate-50 flex flex-wrap justify-between items-center gap-2 shrink-0">

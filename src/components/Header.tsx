@@ -99,12 +99,9 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="font-bold text-lg sm:text-xl tracking-tight text-white">
                 IELTS Reading <span className="text-blue-400">Focus</span>
               </span>
-              <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">
-                Academic & GT
-              </span>
             </div>
             <p className="text-xs text-slate-400 hidden sm:block truncate max-w-xs md:max-w-md">
-              Reducing electricity consumption on the Isle of Eigg
+              Sport Science in Australia
             </p>
           </div>
         </div>
